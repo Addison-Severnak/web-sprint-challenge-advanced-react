@@ -157,11 +157,10 @@ export default function AppFunctional(props) {
     // You will need this to update the value of the input.
     const { value } = evt.target;
     setEmail(value);
+    
   }
 
-  function onSubmit(evt) {
-    // Use a POST request to send a payload to the server.
-    evt.preventDefault();
+  function postMessage() {
     axios.post(URL, { x: xCoord, y: yCoord, steps: steps, email: email })
       .then(res => {
         setMessage(res.data.message);
@@ -169,6 +168,13 @@ export default function AppFunctional(props) {
       .catch(err => {
         setMessage(err.response.data.message);
       })
+  }
+
+  function onSubmit(evt) {
+    // Use a POST request to send a payload to the server.
+    evt.preventDefault();
+    postMessage();
+    setEmail(initialEmail);
   }
 
   function stepMessage() {
