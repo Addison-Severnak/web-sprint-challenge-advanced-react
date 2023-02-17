@@ -30,14 +30,46 @@ export default function AppFunctional(props) {
       yCoord = 1;
       return `(${xCoord}, ${yCoord})`;
     } 
-    else if(index === 1) return '(2, 1)';
-    else if(index === 2) return '(3, 1)';
-    else if(index === 3) return '(1, 2)';
-    else if(index === 4) return '(2, 2)';
-    else if(index === 5) return '(3, 2)';
-    else if(index === 6) return '(1, 3)';
-    else if(index === 7) return '(2, 3)';
-    else if(index === 8) return '(3, 3)';
+    else if(index === 1){
+      xCoord = 2;
+      yCoord = 1;
+      return `(${xCoord}, ${yCoord})`;
+    }
+    else if(index === 2){
+      xCoord = 3;
+      yCoord = 1;
+      return `(${xCoord}, ${yCoord})`;
+    }
+    else if(index === 3){
+      xCoord = 1;
+      yCoord = 2;
+      return `(${xCoord}, ${yCoord})`;
+    }
+    else if(index === 4){
+      xCoord = 2;
+      yCoord = 2;
+      return `(${xCoord}, ${yCoord})`;
+    }
+    else if(index === 5){
+      xCoord = 3;
+      yCoord = 2;
+      return `(${xCoord}, ${yCoord})`;
+    }
+    else if(index === 6){
+      xCoord = 1;
+      yCoord = 3;
+      return `(${xCoord}, ${yCoord})`;
+    }
+    else if(index === 7){
+      xCoord = 2;
+      yCoord = 3;
+      return `(${xCoord}, ${yCoord})`;
+    }
+    else if(index === 8){
+      xCoord = 3;
+      yCoord = 3;
+      return `(${xCoord}, ${yCoord})`;
+    }
   }
 
   function getXYMessage() {
