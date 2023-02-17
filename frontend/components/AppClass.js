@@ -159,10 +159,25 @@ export default class AppClass extends React.Component {
 
   onChange = (evt) => {
     // You will need this to update the value of the input.
+    const { value } = evt.target;
+    this.setState({email: value});
+  }
+
+  postMessage = () => {
+    axios.post(URL, { x: xCoord, y: yCoord, steps: this.state.steps, email: this.state.email })
+      .then(res => {
+        this.setState({message: res.data.message});
+      })
+      .catch(err => {
+        this.setState({message: err.response.data.message});
+      })
   }
 
   onSubmit = (evt) => {
     // Use a POST request to send a payload to the server.
+    evt.preventDefault();
+    this.postMessage();
+    this.setState({email: initialEmail});
   }
 
   render() {
@@ -192,8 +207,8 @@ export default class AppClass extends React.Component {
           <button id="down" onClick={this.moveDown}>DOWN</button>
           <button id="reset" onClick={this.reset}>reset</button>
         </div>
-        <form>
-          <input id="email" type="email" placeholder="type email"></input>
+        <form onSubmit={this.onSubmit}>
+          <input id="email" type="email" placeholder="type email" onChange={this.onChange} value={this.state.email}></input>
           <input id="submit" type="submit"></input>
         </form>
       </div>
