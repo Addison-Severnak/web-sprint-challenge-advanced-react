@@ -63,28 +63,46 @@ export default function AppFunctional(props) {
     if(direction === 'left' && !(index === 6 || index === 3 || index === 0)){ 
       setIndex(index - 1);
       setSteps(steps + 1);
+      if(message != "") setMessage(initialMessage);
     }
     
     else if(direction === 'up' && !(index === 2 || index === 1 || index === 0)){
       setIndex(index - 3);
       setSteps(steps + 1);
+      if(message != "") setMessage(initialMessage);
     }
     
     else if(direction === 'right' && !(index === 8 || index === 5 || index === 2)){
       setIndex(index + 1);
       setSteps(steps + 1);
+      if(message != "") setMessage(initialMessage);
     }
     
     else if(direction === 'down' && !(index === 8 || index === 7 || index === 6)){
       setIndex(index + 3);
       setSteps(steps + 1);
-    } else return index;
+      if(message != "") setMessage(initialMessage);
+    } 
+    
+    else if(direction === 'left'){
+      setMessage("You can't go left");
+    }
+    else if(direction === 'up'){
+      setMessage("You can't go up");
+    }
+    else if(direction === 'right'){
+      setMessage("You can't go right");
+    }
+    else if(direction === 'down'){
+      setMessage("You can't go down");
+    }
   }
 
   function moveLeft() {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
     getNextIndex('left');
+    
   }
   function moveRight() {
     // This event handler can use the helper above to obtain a new index for the "B",
@@ -109,7 +127,9 @@ export default function AppFunctional(props) {
     setEmail(value);
   }
 
-  function postEmail() {
+  function onSubmit(evt) {
+    // Use a POST request to send a payload to the server.
+    evt.preventDefault();
     axios.post(URL, { x: xCoord, y: yCoord, steps: steps, email: email })
       .then(res => {
         setMessage(res.data.message);
@@ -117,12 +137,6 @@ export default function AppFunctional(props) {
       .catch(err => {
         setMessage(err.response.data.message);
       })
-  }
-
-  function onSubmit(evt) {
-    // Use a POST request to send a payload to the server.
-    evt.preventDefault();
-    postEmail();
   }
 
   function stepMessage() {
