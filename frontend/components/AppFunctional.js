@@ -1,10 +1,16 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 
 // Suggested initial states
 const initialMessage = ''
 const initialEmail = ''
 const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
+
+// POST variables
+const URL = 'http://localhost:9000/api/result';
+let xCoord = 2;
+let yCoord = 2;
 
 
 export default function AppFunctional(props) {
@@ -19,7 +25,11 @@ export default function AppFunctional(props) {
   function getXY() {
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
-    if(index === 0) return '(1, 1)';
+    if(index === 0){
+      xCoord = 1;
+      yCoord = 1;
+      return `(${xCoord}, ${yCoord})`;
+    } 
     else if(index === 1) return '(2, 1)';
     else if(index === 2) return '(3, 1)';
     else if(index === 3) return '(1, 2)';
@@ -95,17 +105,36 @@ export default function AppFunctional(props) {
 
   function onChange(evt) {
     // You will need this to update the value of the input.
+    const { value } = evt.target;
+    setEmail(value);
+  }
+
+  function postEmail() {
+    axios.post(URL, { x: xCoord, y: yCoord, steps: steps, email: email })
+      .then(res => {
+        setMessage(res.data.message);
+      })
+      .catch(err => {
+        setMessage(err.response.data.message);
+      })
   }
 
   function onSubmit(evt) {
     // Use a POST request to send a payload to the server.
+    evt.preventDefault();
+    postEmail();
+  }
+
+  function stepMessage() {
+    if(steps === 1) return `You moved ${steps} time`;
+    else return `You moved ${steps} times`;
   }
 
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">{getXYMessage()}</h3>
-        <h3 id="steps">You moved {steps} times</h3>
+        <h3 id="steps">{stepMessage()}</h3>
       </div>
       <div id="grid">
         {
@@ -117,7 +146,7 @@ export default function AppFunctional(props) {
         }
       </div>
       <div className="info">
-        <h3 id="message"></h3>
+        <h3 id="message">{message}</h3>
       </div>
       <div id="keypad">
         <button id="left" onClick={moveLeft}>LEFT</button>
@@ -126,8 +155,8 @@ export default function AppFunctional(props) {
         <button id="down" onClick={moveDown}>DOWN</button>
         <button id="reset" onClick={reset}>reset</button>
       </div>
-      <form>
-        <input id="email" type="email" placeholder="type email"></input>
+      <form onSubmit={onSubmit}>
+        <input id="email" type="email" placeholder="type email" onChange={onChange} value={email}></input>
         <input id="submit" type="submit"></input>
       </form>
     </div>
